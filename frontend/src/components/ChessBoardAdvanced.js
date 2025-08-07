@@ -16,15 +16,40 @@ const ChessBoardAdvanced = ({
 
   // Initialize board when puzzle changes
   useEffect(() => {
-    if (puzzle && puzzle.position) {
-      const success = chessEngine.loadPosition(puzzle.position);
+    if (!puzzle) {
+      console.log('No puzzle provided to ChessBoardAdvanced');
+      return;
+    }
+
+    if (!puzzle.position) {
+      console.warn('Puzzle has no position field:', puzzle);
+      // Use default starting position if no FEN provided
+      const success = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
       if (success) {
         updateBoardDisplay();
         setMoveHistory([]);
         setSelectedSquare(null);
         setValidMoves([]);
-      } else {
-        console.error('Failed to load puzzle position:', puzzle.position);
+      }
+      return;
+    }
+
+    console.log('Loading puzzle position:', puzzle.position);
+    const success = chessEngine.loadPosition(puzzle.position);
+    if (success) {
+      updateBoardDisplay();
+      setMoveHistory([]);
+      setSelectedSquare(null);
+      setValidMoves([]);
+    } else {
+      console.error('Failed to load puzzle position:', puzzle.position);
+      // Fallback to default position
+      const fallbackSuccess = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      if (fallbackSuccess) {
+        updateBoardDisplay();
+        setMoveHistory([]);
+        setSelectedSquare(null);
+        setValidMoves([]);
       }
     }
   }, [puzzle]);
