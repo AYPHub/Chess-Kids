@@ -55,8 +55,14 @@ const ChessBoardAdvanced = ({
   }, [puzzle]);
 
   const updateBoardDisplay = () => {
-    const board = chessEngine.getBoard();
-    setBoardState(board);
+    try {
+      const board = chessEngine.getBoard();
+      setBoardState(board);
+    } catch (error) {
+      console.error('Error updating board display:', error);
+      // Set empty board as fallback
+      setBoardState(Array(8).fill(null).map(() => Array(8).fill(null)));
+    }
   };
 
   const handleSquareClick = (row, col) => {
