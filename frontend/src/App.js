@@ -7,22 +7,27 @@ import PuzzleSelection from "./components/PuzzleSelection";
 import ChessGame from "./components/ChessGame";
 import ProgressDashboard from "./components/ProgressDashboard";
 import Navigation from "./components/Navigation";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   return (
-    <div className="App min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <BrowserRouter>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/puzzles" element={<PuzzleSelection />} />
-          <Route path="/play/:puzzleId" element={<ChessGame />} />
-          <Route path="/progress" element={<ProgressDashboard />} />
-        </Routes>
-        <Toaster />
-      </BrowserRouter>
-    </div>
+    <ErrorBoundary>
+      <div className="App min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <BrowserRouter>
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/puzzles" element={<PuzzleSelection />} />
+            <Route path="/play/:puzzleId" element={<ChessGame />} />
+            <Route path="/progress" element={<ProgressDashboard />} />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </div>
+    </ErrorBoundary>
   );
 }
+
+export default App;
 
 export default App;
