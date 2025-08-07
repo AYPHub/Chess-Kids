@@ -1,0 +1,99 @@
+{
+  "timestamp": "2025-08-07T08:34:11.447658",
+  "base_url": "https://13517f19-6997-4b74-8294-06382beb8bfc.preview.emergentagent.com",
+  "api_url": "https://13517f19-6997-4b74-8294-06382beb8bfc.preview.emergentagent.com/api",
+  "total_tests": 15,
+  "passed_tests": 15,
+  "results": [
+    {
+      "test": "Health Check",
+      "success": true,
+      "details": "API is healthy: Chess Puzzles API is running",
+      "timestamp": "2025-08-07T08:34:04.608679"
+    },
+    {
+      "test": "Get All Puzzles",
+      "success": true,
+      "details": "Found 14 puzzles with correct structure",
+      "timestamp": "2025-08-07T08:34:05.135749"
+    },
+    {
+      "test": "Filter by Beginner",
+      "success": true,
+      "details": "Found 4 beginner puzzles",
+      "timestamp": "2025-08-07T08:34:05.649290"
+    },
+    {
+      "test": "Filter by Intermediate",
+      "success": true,
+      "details": "Found 4 intermediate puzzles",
+      "timestamp": "2025-08-07T08:34:05.660383"
+    },
+    {
+      "test": "Filter by Advanced",
+      "success": true,
+      "details": "Found 6 advanced puzzles",
+      "timestamp": "2025-08-07T08:34:05.672565"
+    },
+    {
+      "test": "Get Specific Puzzle",
+      "success": true,
+      "details": "Retrieved puzzle 'Checkmate in 1' successfully",
+      "timestamp": "2025-08-07T08:34:06.182165"
+    },
+    {
+      "test": "Invalid Puzzle ID Error Handling",
+      "success": true,
+      "details": "Correctly returned 404 for invalid ID",
+      "timestamp": "2025-08-07T08:34:06.690529"
+    },
+    {
+      "test": "Complete Puzzle",
+      "success": true,
+      "details": "Puzzle completed successfully, total solved: 1",
+      "timestamp": "2025-08-07T08:34:07.206723"
+    },
+    {
+      "test": "Get Progress",
+      "success": true,
+      "details": "Progress retrieved: 1/14 puzzles",
+      "timestamp": "2025-08-07T08:34:07.716418"
+    },
+    {
+      "test": "Award Achievement",
+      "success": true,
+      "details": "First puzzle achievement awarded successfully",
+      "timestamp": "2025-08-07T08:34:08.226847"
+    },
+    {
+      "test": "Invalid Achievement Error Handling",
+      "success": true,
+      "details": "Correctly returned 400 for invalid achievement",
+      "timestamp": "2025-08-07T08:34:08.733966"
+    },
+    {
+      "test": "Save Game State",
+      "success": true,
+      "details": "Game state saved successfully",
+      "timestamp": "2025-08-07T08:34:09.254450"
+    },
+    {
+      "test": "Load Game State",
+      "success": true,
+      "details": "Game state loaded for puzzle b2",
+      "timestamp": "2025-08-07T08:34:09.932051"
+    },
+    {
+      "test": "Load Nonexistent Game State",
+      "success": true,
+      "details": "Correctly returned 404 for nonexistent game state",
+      "timestamp": "2025-08-07T08:34:10.440137"
+    },
+    {
+      "test": "Save Game State Missing Fields",
+      "success": true,
+      "details": "Correctly returned 400 for missing fields",
+      "timestamp": "2025-08-07T08:34:10.947381"
+    }
+  ]
+}
