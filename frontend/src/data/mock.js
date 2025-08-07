@@ -107,6 +107,86 @@ export const mockPuzzles = [
     position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
     solution: 'Nd5',
     hints: ['One move, two threats', 'Your knight is very active']
+  },
+
+  // Advanced puzzles
+  {
+    id: 'a1',
+    title: 'Checkmate in 3',
+    description: 'Find the precise sequence to force checkmate in 3 moves',
+    difficulty: 'advanced',
+    timeLimit: 15,
+    rating: 1600,
+    completed: true,
+    moves: ['Qd8+', 'Kh7', 'Qh8+', 'Kg6', 'Qh6#'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'Qd8+ Kh7 Qh8+ Kg6 Qh6#',
+    hints: ['Force the king to a specific square', 'Look for a mating net', 'Calculate all opponent responses']
+  },
+  {
+    id: 'a2',
+    title: 'Complex Sacrifice',
+    description: 'Sacrifice material for a winning attack',
+    difficulty: 'advanced',
+    timeLimit: 12,
+    rating: 1750,
+    completed: false,
+    moves: ['Rxh7+', 'Kxh7', 'Qh5+'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'Rxh7+ Kxh7 Qh5+ Kg8 Bxg7',
+    hints: ['Material is less important than king safety', 'Open lines to the king', 'Calculate the entire sequence']
+  },
+  {
+    id: 'a3',
+    title: 'Endgame Technique',
+    description: 'Convert your advantage in the endgame',
+    difficulty: 'advanced',
+    timeLimit: 20,
+    rating: 1500,
+    completed: true,
+    moves: ['Kf6', 'Kf8', 'g6'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'Kf6 Kf8 g6 Ke8 g7',
+    hints: ['King and pawn vs king requires precise technique', 'Opposition is key', 'Support your pawn advance']
+  },
+  {
+    id: 'a4',
+    title: 'Positional Masterpiece',
+    description: 'Find the quiet move that improves your position decisively',
+    difficulty: 'advanced',
+    timeLimit: 18,
+    rating: 1650,
+    completed: false,
+    moves: ['Re8+'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'Re8+',
+    hints: ['Not all winning moves are captures or checks', 'Improve piece coordination', 'Look for long-term advantages']
+  },
+  {
+    id: 'a5',
+    title: 'Multi-Piece Coordination',
+    description: 'Coordinate multiple pieces for a devastating attack',
+    difficulty: 'advanced',
+    timeLimit: 25,
+    rating: 1800,
+    completed: false,
+    moves: ['Nf7', 'Qxf7', 'Bxf7+'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'Nf7 Qxf7 Bxf7+ Kh8 Ng6#',
+    hints: ['All pieces must work together', 'Create multiple threats', 'Force opponent into bad moves']
+  },
+  {
+    id: 'a6',
+    title: 'Strategic Breakthrough',
+    description: 'Break through a solid defensive position',
+    difficulty: 'advanced',
+    timeLimit: 22,
+    rating: 1700,
+    completed: true,
+    moves: ['f4', 'exf4', 'e5'],
+    position: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
+    solution: 'f4 exf4 e5 dxe5 d6',
+    hints: ['Pawn breaks can shatter defenses', 'Create weaknesses in opponent structure', 'Think strategically, not just tactically']
   }
 ];
 
