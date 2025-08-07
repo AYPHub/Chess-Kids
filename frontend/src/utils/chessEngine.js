@@ -132,11 +132,16 @@ export class ChessEngine {
 
   // Convert piece notation for display
   static pieceToUnicode(piece) {
+    if (!piece || typeof piece !== 'string') return '';
+    
     const pieces = {
+      // White pieces
       'wk': '♔', 'wq': '♕', 'wr': '♖', 'wb': '♗', 'wn': '♘', 'wp': '♙',
+      // Black pieces  
       'bk': '♚', 'bq': '♛', 'br': '♜', 'bb': '♝', 'bn': '♞', 'bp': '♟'
     };
-    return pieces[piece] || '';
+    
+    return pieces[piece.toLowerCase()] || '';
   }
 
   // Convert square notation (e.g., 'e4' to [4, 4])
