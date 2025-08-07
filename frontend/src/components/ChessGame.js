@@ -299,13 +299,19 @@ const ChessGame = () => {
         {/* Chess Board */}
         <div className="lg:col-span-3">
           <Card className="p-6">
-            <ChessBoardAdvanced
-              puzzle={puzzle}
-              onMove={handleChessMove}
-              onPuzzleSolved={(data) => handlePuzzleCompletion(data.solved)}
-              gameStatus={gameState.gameStatus}
-              hintsUsed={gameState.hintsUsed}
-            />
+            {puzzle ? (
+              <ChessBoardAdvanced
+                puzzle={puzzle}
+                onMove={handleChessMove}
+                onPuzzleSolved={(data) => handlePuzzleCompletion(data.solved)}
+                gameStatus={gameState.gameStatus}
+                hintsUsed={gameState.hintsUsed}
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Loading puzzle...</p>
+              </div>
+            )}
           </Card>
         </div>
 
