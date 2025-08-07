@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict, Any
 from datetime import datetime
-from .database import PuzzleDatabase, ProgressDatabase, GameStateDatabase
-from .models import (
+from database import PuzzleDatabase, ProgressDatabase, GameStateDatabase
+from models import (
     PuzzleModel, UserProgress, GameState, CompletedPuzzle, 
     PuzzleAttempt, ProgressResponse, ACHIEVEMENTS
 )
