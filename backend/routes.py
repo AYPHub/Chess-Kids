@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional, Dict, Any
-from .services import PuzzleService, ProgressService, AchievementService, GameStateService
-from .models import PuzzleAttempt, AchievementRequest
+from services import PuzzleService, ProgressService, AchievementService, GameStateService
+from models import PuzzleAttempt, AchievementRequest
 
 # Create router with /api prefix
 router = APIRouter(prefix="/api")
