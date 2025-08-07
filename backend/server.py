@@ -6,9 +6,9 @@ import os
 import logging
 from pathlib import Path
 
-# Import new modules
-from .routes import router
-from .database import init_database
+# Import new modules using absolute imports
+from routes import router
+from database import init_database
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
