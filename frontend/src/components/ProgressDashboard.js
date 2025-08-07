@@ -127,25 +127,25 @@ const ProgressDashboard = () => {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium">Beginner</span>
-                <span className="text-sm text-gray-600">{progress.beginners_solved}/4</span>
+                <span className="text-sm text-gray-600">{progress.beginners_solved}/15</span>
               </div>
-              <Progress value={(progress.beginners_solved / 4) * 100} className="h-3" />
+              <Progress value={(progress.beginners_solved / 15) * 100} className="h-3" />
             </div>
             
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium">Intermediate</span>
-                <span className="text-sm text-gray-600">{progress.intermediate_solved}/4</span>
+                <span className="text-sm text-gray-600">{progress.intermediate_solved}/20</span>
               </div>
-              <Progress value={(progress.intermediate_solved / 4) * 100} className="h-3" />
+              <Progress value={(progress.intermediate_solved / 20) * 100} className="h-3" />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium">Advanced</span>
-                <span className="text-sm text-gray-600">{progress.advanced_solved}/6</span>
+                <span className="text-sm text-gray-600">{progress.advanced_solved}/15</span>
               </div>
-              <Progress value={(progress.advanced_solved / 6) * 100} className="h-3" />
+              <Progress value={(progress.advanced_solved / 15) * 100} className="h-3" />
             </div>
           </CardContent>
         </Card>
