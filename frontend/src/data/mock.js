@@ -191,22 +191,29 @@ export const mockPuzzles = [
 ];
 
 export const mockUserProgress = {
-  totalPuzzlesSolved: 4,
-  totalPuzzles: 8,
+  totalPuzzlesSolved: 6,
+  totalPuzzles: 14,
   beginnersSolved: 2,
   intermediateSolved: 2,
-  averageRating: 1025,
+  advancedSolved: 2,
+  averageRating: 1125,
   streak: 3,
   achievements: [
     { id: 'first_puzzle', name: 'First Puzzle', description: 'Solved your first puzzle!', earned: true },
     { id: 'beginner_master', name: 'Beginner Master', description: 'Completed all beginner puzzles', earned: false },
+    { id: 'intermediate_master', name: 'Intermediate Master', description: 'Completed all intermediate puzzles', earned: false },
+    { id: 'advanced_master', name: 'Advanced Master', description: 'Completed all advanced puzzles', earned: false },
     { id: 'quick_solver', name: 'Quick Solver', description: 'Solved a puzzle in under 30 seconds', earned: true },
-    { id: 'streak_3', name: '3-Day Streak', description: 'Solved puzzles 3 days in a row', earned: true }
+    { id: 'streak_3', name: '3-Day Streak', description: 'Solved puzzles 3 days in a row', earned: true },
+    { id: 'tactical_genius', name: 'Tactical Genius', description: 'Solved 5 advanced puzzles', earned: false },
+    { id: 'endgame_expert', name: 'Endgame Expert', description: 'Mastered endgame techniques', earned: true }
   ],
   recentActivity: [
     { date: '2024-01-15', puzzle: 'Checkmate in 1', result: 'solved', time: 45 },
+    { date: '2024-01-14', puzzle: 'Strategic Breakthrough', result: 'solved', time: 340 },
     { date: '2024-01-14', puzzle: 'Fork with Knight', result: 'solved', time: 78 },
     { date: '2024-01-13', puzzle: 'Back Rank Mate', result: 'solved', time: 92 },
+    { date: '2024-01-12', puzzle: 'Checkmate in 3', result: 'solved', time: 456 },
     { date: '2024-01-12', puzzle: 'Checkmate in 2', result: 'solved', time: 156 }
   ]
 };
