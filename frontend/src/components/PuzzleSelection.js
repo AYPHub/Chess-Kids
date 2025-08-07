@@ -181,6 +181,47 @@ const PuzzleSelection = () => {
               </Card>
             ))}
           </div>
+        <TabsContent value="advanced" className="mt-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPuzzles.map((puzzle) => (
+              <Card key={puzzle.id} className="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-white border">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge className={getDifficultyColor(puzzle.difficulty)}>
+                      {puzzle.difficulty}
+                    </Badge>
+                    {puzzle.completed && (
+                      <Trophy className="h-4 w-4 text-yellow-500" />
+                    )}
+                  </div>
+                  <CardTitle className="text-lg">{puzzle.title}</CardTitle>
+                  <CardDescription className="text-sm">
+                    {puzzle.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Clock className="h-4 w-4 mr-1" />
+                      {puzzle.timeLimit}m
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Star className="h-4 w-4 mr-1" />
+                      {puzzle.rating}
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    className="w-full bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-200"
+                    onClick={() => navigate(`/play/${puzzle.id}`)}
+                  >
+                    <Play className="h-4 w-4 mr-2" />
+                    {puzzle.completed ? 'Play Again' : 'Start Puzzle'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
       </Tabs>
     </div>
