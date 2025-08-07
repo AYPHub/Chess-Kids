@@ -354,9 +354,16 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend tasks completed and tested successfully"
+    - "Navigation Component"
+    - "HomePage Component"
+    - "PuzzleSelection Component"
+    - "ChessGame Component"
+    - "ChessBoard Component"
+    - "ProgressDashboard Component"
+    - "API Integration"
+    - "Custom Hooks (useAPI, useFetch)"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
