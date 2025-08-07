@@ -16,6 +16,8 @@ const ChessBoardAdvanced = ({
 
   // Initialize board when puzzle changes
   useEffect(() => {
+    console.log('ChessBoardAdvanced useEffect triggered with puzzle:', puzzle);
+    
     if (!puzzle) {
       console.log('No puzzle provided to ChessBoardAdvanced');
       return;
@@ -25,6 +27,7 @@ const ChessBoardAdvanced = ({
       console.warn('Puzzle has no position field:', puzzle);
       // Use default starting position if no FEN provided
       const success = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      console.log('Loaded default position, success:', success);
       if (success) {
         updateBoardDisplay();
         setMoveHistory([]);
@@ -36,6 +39,8 @@ const ChessBoardAdvanced = ({
 
     console.log('Loading puzzle position:', puzzle.position);
     const success = chessEngine.loadPosition(puzzle.position);
+    console.log('Load position result:', success);
+    
     if (success) {
       updateBoardDisplay();
       setMoveHistory([]);
@@ -45,6 +50,7 @@ const ChessBoardAdvanced = ({
       console.error('Failed to load puzzle position:', puzzle.position);
       // Fallback to default position
       const fallbackSuccess = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      console.log('Fallback position loaded, success:', fallbackSuccess);
       if (fallbackSuccess) {
         updateBoardDisplay();
         setMoveHistory([]);
