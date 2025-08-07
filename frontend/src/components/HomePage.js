@@ -92,7 +92,7 @@ const HomePage = () => {
             <div className="text-gray-600">Puzzles Available</div>
           </div>
           <div className="text-center">
-            <div className="text-4xl font-bold text-green-600 mb-2">2</div>
+            <div className="text-4xl font-bold text-green-600 mb-2">3</div>
             <div className="text-gray-600">Difficulty Levels</div>
           </div>
           <div className="text-center">
