@@ -38,10 +38,22 @@ export class ChessEngine {
 
   // Get current board state as 2D array
   getBoard() {
-    const board = this.chess.board();
-    return board.map(row => 
-      row.map(piece => piece ? `${piece.color}${piece.type}` : null)
-    );
+    try {
+      const board = this.chess.board();
+      // Convert chess.js board format to our expected format
+      return board.map(row => 
+        row.map(piece => {
+          if (!piece) return null;
+          // chess.js returns {type, color} objects
+          // Convert to our string format: "wp", "bk", etc.
+          return piece.color + piece.type;
+        })
+      );
+    } catch (error) {
+      console.error('Error getting board state:', error);
+      // Return empty 8x8 board as fallback
+      return Array(8).fill(null).map(() => Array(8).fill(null));
+    }
   }
 
   // Get legal moves for a square
