@@ -18,6 +18,7 @@ import {
 import { useToast } from '../hooks/use-toast';
 import { useAPI, useFetch } from '../hooks/useAPI';
 import ChessBoardAdvanced from './ChessBoardAdvanced';
+import SimpleChessTest from './SimpleChessTest';
 import { puzzleAPI, gameAPI } from '../services/api';
 import LoadingSpinner, { LoadingCard } from './LoadingSpinner';
 import { ErrorCard } from './ErrorBoundary';
