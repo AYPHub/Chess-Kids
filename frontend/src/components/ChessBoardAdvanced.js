@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ChessEngine } from '../utils/chessEngine';
-import { testChessEngine } from '../utils/testChess';
 
 const ChessBoardAdvanced = ({ 
   puzzle,
@@ -9,7 +7,7 @@ const ChessBoardAdvanced = ({
   gameStatus,
   hintsUsed
 }) => {
-  const [chessEngine] = useState(() => new ChessEngine());
+  const [chess, setChess] = useState(null);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
   const [boardState, setBoardState] = useState(() => {
@@ -18,81 +16,82 @@ const ChessBoardAdvanced = ({
   });
   const [moveHistory, setMoveHistory] = useState([]);
 
-  // Test chess engine on component mount
+  // Initialize chess.js when component mounts
   useEffect(() => {
-    const testResult = testChessEngine();
-    console.log('Chess engine test result:', testResult);
+    const initChess = async () => {
+      try {
+        const { Chess } = await import('chess.js');
+        const chessInstance = new Chess();
+        setChess(chessInstance);
+        console.log('✅ Chess instance initialized in ChessBoardAdvanced');
+      } catch (error) {
+        console.error('❌ Failed to initialize chess.js:', error);
+      }
+    };
+    
+    initChess();
   }, []);
 
-  // Initialize board when puzzle changes
+  // Initialize board when chess instance and puzzle are ready
   useEffect(() => {
-    console.log('ChessBoardAdvanced useEffect triggered with puzzle:', puzzle);
+    if (!chess || !puzzle) return;
     
-    if (!puzzle) {
-      console.log('No puzzle provided to ChessBoardAdvanced');
-      return;
-    }
-
-    if (!puzzle.position) {
-      console.warn('Puzzle has no position field:', puzzle);
-      // Use default starting position if no FEN provided
-      const success = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-      console.log('Loaded default position, success:', success);
-      if (success) {
-        updateBoardDisplay();
-        setMoveHistory([]);
-        setSelectedSquare(null);
-        setValidMoves([]);
+    console.log('Loading puzzle in ChessBoardAdvanced:', puzzle.title, puzzle.position);
+    
+    try {
+      if (puzzle.position) {
+        chess.load(puzzle.position);
+        console.log('✅ Loaded puzzle position');
+      } else {
+        chess.reset(); // Default starting position
+        console.log('✅ Using default starting position');
       }
-      return;
-    }
-
-    console.log('Loading puzzle position:', puzzle.position);
-    const success = chessEngine.loadPosition(puzzle.position);
-    console.log('Load position result:', success);
-    
-    if (success) {
+      
+      // Update board display
       updateBoardDisplay();
       setMoveHistory([]);
       setSelectedSquare(null);
       setValidMoves([]);
-    } else {
-      console.error('Failed to load puzzle position:', puzzle.position);
+      
+    } catch (error) {
+      console.error('❌ Error loading position:', error);
       // Fallback to default position
-      const fallbackSuccess = chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-      console.log('Fallback position loaded, success:', fallbackSuccess);
-      if (fallbackSuccess) {
-        updateBoardDisplay();
-        setMoveHistory([]);
-        setSelectedSquare(null);
-        setValidMoves([]);
-      }
+      chess.reset();
+      updateBoardDisplay();
     }
-  }, [puzzle]);
+  }, [chess, puzzle]);
 
   const updateBoardDisplay = () => {
+    if (!chess) return;
+    
     try {
-      const board = chessEngine.getBoard();
-      console.log('Updated board state:', board); // Debug logging
-      setBoardState(board);
+      const board = chess.board();
+      const convertedBoard = board.map(row => 
+        row.map(piece => {
+          if (!piece) return null;
+          return piece.color + piece.type;
+        })
+      );
+      
+      console.log('📋 Updated board state:', convertedBoard.flat().filter(p => p).length, 'pieces');
+      setBoardState(convertedBoard);
     } catch (error) {
       console.error('Error updating board display:', error);
-      // Set empty board as fallback
       setBoardState(Array(8).fill(null).map(() => Array(8).fill(null)));
     }
   };
 
   const handleSquareClick = (row, col) => {
-    if (gameStatus !== 'playing') return;
+    if (gameStatus !== 'playing' || !chess) return;
 
-    const square = ChessEngine.coordsToSquare(row, col);
+    const square = coordsToSquare(row, col);
     const piece = boardState[row][col];
 
     // If no square is selected
     if (!selectedSquare) {
       if (piece && isPieceOwnedByCurrentPlayer(piece)) {
         setSelectedSquare(square);
-        const moves = chessEngine.getLegalMoves(square);
+        const moves = chess.moves({ square, verbose: true });
         setValidMoves(moves.map(move => move.to));
       }
       return;
@@ -106,52 +105,52 @@ const ChessBoardAdvanced = ({
     }
 
     // Try to make a move
-    const move = {
-      from: selectedSquare,
-      to: square
-    };
+    try {
+      const move = chess.move({
+        from: selectedSquare,
+        to: square
+      });
 
-    const result = chessEngine.makeMove(move);
-    
-    if (result) {
-      // Valid move made
-      updateBoardDisplay();
-      setSelectedSquare(null);
-      setValidMoves([]);
-      
-      const newMoveHistory = [...moveHistory, result];
-      setMoveHistory(newMoveHistory);
-      
-      // Check if move is part of solution
-      const isSolutionMove = chessEngine.checkSolution(result, puzzle.moves);
-      
-      // Notify parent component
-      if (onMove) {
-        onMove({
-          move: result,
-          isSolutionMove,
-          position: chessEngine.getFEN(),
-          gameOver: chessEngine.isGameOver(),
-          inCheck: chessEngine.inCheck(),
-          inCheckmate: chessEngine.inCheckmate()
-        });
-      }
-
-      // Check if puzzle is solved
-      if (isSolutionMove && checkPuzzleCompletion(result, newMoveHistory)) {
-        if (onPuzzleSolved) {
-          onPuzzleSolved({
-            solved: true,
-            moves: newMoveHistory,
-            finalPosition: chessEngine.getFEN()
+      if (move) {
+        console.log('✅ Move made:', move.san);
+        updateBoardDisplay();
+        setSelectedSquare(null);
+        setValidMoves([]);
+        
+        const newMoveHistory = [...moveHistory, move];
+        setMoveHistory(newMoveHistory);
+        
+        // Check if move is part of solution
+        const isSolutionMove = puzzle.moves && puzzle.moves.includes(move.san);
+        
+        // Notify parent component
+        if (onMove) {
+          onMove({
+            move: move,
+            isSolutionMove,
+            position: chess.fen(),
+            gameOver: chess.isGameOver(),
+            inCheck: chess.inCheck(),
+            inCheckmate: chess.isCheckmate()
           });
         }
+
+        // Check if puzzle is solved
+        if (isSolutionMove || chess.isCheckmate()) {
+          if (onPuzzleSolved) {
+            onPuzzleSolved({
+              solved: true,
+              moves: newMoveHistory,
+              finalPosition: chess.fen()
+            });
+          }
+        }
       }
-    } else {
+    } catch (error) {
       // Invalid move, try selecting new piece
       if (piece && isPieceOwnedByCurrentPlayer(piece)) {
         setSelectedSquare(square);
-        const moves = chessEngine.getLegalMoves(square);
+        const moves = chess.moves({ square, verbose: true });
         setValidMoves(moves.map(move => move.to));
       } else {
         setSelectedSquare(null);
@@ -161,37 +160,15 @@ const ChessBoardAdvanced = ({
   };
 
   const isPieceOwnedByCurrentPlayer = (piece) => {
-    if (!piece) return false;
-    const currentTurn = chessEngine.getTurn();
-    const pieceColor = piece.charAt(0); // 'w' or 'b'
+    if (!piece || !chess) return false;
+    const currentTurn = chess.turn();
+    const pieceColor = piece.charAt(0);
     return currentTurn === pieceColor;
   };
 
-  const checkPuzzleCompletion = (lastMove, history) => {
-    // Simple completion check - can be made more sophisticated
-    if (chessEngine.inCheckmate()) {
-      return true;
-    }
-    
-    // Check if the move sequence matches the solution
-    if (puzzle.moves && puzzle.moves.length > 0) {
-      const solutionMoves = puzzle.moves;
-      const playedMoves = history.map(move => move.san);
-      
-      // Check if we've played all solution moves correctly
-      return playedMoves.length >= solutionMoves.length &&
-             solutionMoves.every((solMove, index) => 
-               playedMoves[index] && 
-               (playedMoves[index] === solMove || 
-                playedMoves[index].replace(/[+#]/, '') === solMove.replace(/[+#]/, ''))
-             );
-    }
-    
-    return false;
-  };
-
   const undoLastMove = () => {
-    const undone = chessEngine.undoMove();
+    if (!chess) return false;
+    const undone = chess.undo();
     if (undone) {
       updateBoardDisplay();
       setMoveHistory(prev => prev.slice(0, -1));
@@ -203,23 +180,49 @@ const ChessBoardAdvanced = ({
   };
 
   const resetPosition = () => {
-    if (!puzzle) return;
+    if (!chess || !puzzle) return;
     
-    if (puzzle.position) {
-      const success = chessEngine.loadPosition(puzzle.position);
-      if (!success) {
-        // Fallback to default position
-        chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+    try {
+      if (puzzle.position) {
+        chess.load(puzzle.position);
+      } else {
+        chess.reset();
       }
-    } else {
-      // Use default position if no puzzle position
-      chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      updateBoardDisplay();
+      setMoveHistory([]);
+      setSelectedSquare(null);
+      setValidMoves([]);
+    } catch (error) {
+      console.error('Error resetting position:', error);
     }
+  };
+
+  // Utility functions
+  const coordsToSquare = (row, col) => {
+    const file = String.fromCharCode(97 + col);
+    const rank = (8 - row).toString();
+    return file + rank;
+  };
+
+  const isSquareLight = (row, col) => (row + col) % 2 === 0;
+  const isSquareSelected = (row, col) => {
+    const square = coordsToSquare(row, col);
+    return selectedSquare === square;
+  };
+  const isValidMoveSquare = (row, col) => {
+    const square = coordsToSquare(row, col);
+    return validMoves.includes(square);
+  };
+
+  const pieceToUnicode = (piece) => {
+    if (!piece || typeof piece !== 'string') return '';
     
-    updateBoardDisplay();
-    setMoveHistory([]);
-    setSelectedSquare(null);
-    setValidMoves([]);
+    const pieces = {
+      'wk': '♔', 'wq': '♕', 'wr': '♖', 'wb': '♗', 'wn': '♘', 'wp': '♙',
+      'bk': '♚', 'bq': '♛', 'br': '♜', 'bb': '♝', 'bn': '♞', 'bp': '♟'
+    };
+    
+    return pieces[piece.toLowerCase()] || '';
   };
 
   // Expose methods to parent
@@ -229,16 +232,6 @@ const ChessBoardAdvanced = ({
       window.chessBoard.reset = resetPosition;
     }
   });
-
-  const isSquareLight = (row, col) => (row + col) % 2 === 0;
-  const isSquareSelected = (row, col) => {
-    const square = ChessEngine.coordsToSquare(row, col);
-    return selectedSquare === square;
-  };
-  const isValidMoveSquare = (row, col) => {
-    const square = ChessEngine.coordsToSquare(row, col);
-    return validMoves.includes(square);
-  };
 
   const getSquareClasses = (row, col) => {
     let classes = "w-16 h-16 flex items-center justify-center text-4xl cursor-pointer transition-all duration-200 relative ";
@@ -266,7 +259,6 @@ const ChessBoardAdvanced = ({
 
     return (
       <>
-        {/* File labels (bottom) */}
         <div className="flex">
           <div className="w-8"></div>
           {files.map((file, index) => (
@@ -276,7 +268,6 @@ const ChessBoardAdvanced = ({
           ))}
         </div>
         
-        {/* Rank labels (left side) */}
         <div className="absolute left-0 top-6 flex flex-col">
           {ranks.map((rank, index) => (
             <div key={rank} className="w-8 h-16 flex items-center justify-center text-sm font-semibold text-gray-600">
@@ -287,6 +278,15 @@ const ChessBoardAdvanced = ({
       </>
     );
   };
+
+  // Don't render until chess is initialized
+  if (!chess || boardState.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">Initializing chess board...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -304,21 +304,20 @@ const ChessBoardAdvanced = ({
                   onClick={() => handleSquareClick(rowIndex, colIndex)}
                 >
                   {piece && (
-                    <span className={`select-none text-shadow ${
+                    <span className={`select-none ${
                       piece.charAt(0) === 'w' ? 'text-white drop-shadow-lg' : 'text-gray-800'
                     }`} style={{ fontSize: '2.5rem', lineHeight: '1' }}>
-                      {ChessEngine.pieceToUnicode(piece)}
+                      {pieceToUnicode(piece)}
                     </span>
                   )}
                   
-                  {/* Valid move indicator for empty squares */}
+                  {/* Valid move indicators */}
                   {isValidMoveSquare(rowIndex, colIndex) && !piece && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-4 h-4 bg-green-500 rounded-full opacity-60"></div>
                     </div>
                   )}
                   
-                  {/* Capture indicator for occupied squares */}
                   {isValidMoveSquare(rowIndex, colIndex) && piece && (
                     <div className="absolute inset-0 border-4 border-red-500 rounded pointer-events-none opacity-70"></div>
                   )}
@@ -338,20 +337,13 @@ const ChessBoardAdvanced = ({
         </div>
       )}
 
-      {gameStatus === 'failed' && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-center text-red-800 font-semibold">
-            Try again! You can do it!
-          </p>
-        </div>
-      )}
-
-      {/* Additional info for debugging */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="mt-4 text-xs text-gray-500 max-w-md">
-          <p>Turn: {chessEngine.getTurn() === 'w' ? 'White' : 'Black'}</p>
-          <p>Moves played: {moveHistory.length}</p>
-          <p>In check: {chessEngine.inCheck() ? 'Yes' : 'No'}</p>
+      {/* Debug info */}
+      {process.env.NODE_ENV === 'development' && chess && (
+        <div className="mt-4 text-xs text-gray-500 max-w-md text-center">
+          <p>Turn: {chess.turn() === 'w' ? 'White' : 'Black'}</p>
+          <p>Moves: {moveHistory.length}</p>
+          <p>Check: {chess.inCheck() ? 'Yes' : 'No'}</p>
+          <p>Pieces: {boardState.flat().filter(p => p).length}</p>
         </div>
       )}
     </div>
