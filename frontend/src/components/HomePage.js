@@ -94,7 +94,7 @@ const HomePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
             <div className="text-4xl font-bold text-blue-600 mb-2">
-              {progressData ? progressData.total_puzzles : '14+'}
+              {progressData ? progressData.total_puzzles : '50'}
             </div>
             <div className="text-gray-600">Puzzles Available</div>
           </div>
