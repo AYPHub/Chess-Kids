@@ -2,7 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional, List, Dict, Any
 import os
 from datetime import datetime, timedelta
-from .models import PuzzleModel, UserProgress, GameState, CompletedPuzzle, Achievement
+from models import PuzzleModel, UserProgress, GameState, CompletedPuzzle, Achievement
 
 # MongoDB client
 client = AsyncIOMotorClient(os.environ['MONGO_URL'])
