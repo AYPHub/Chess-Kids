@@ -114,21 +114,21 @@ ACHIEVEMENTS = {
         "description": "Completed all beginner puzzles",
         "condition": lambda progress: len([p for p in progress.completed_puzzles 
                                          if any(puzzle.difficulty == "beginner" and puzzle.id == p.puzzle_id 
-                                               for puzzle in get_all_puzzles())]) >= 4
+                                               for puzzle in get_all_puzzles())]) >= 15
     },
     "intermediate_master": {
         "name": "Intermediate Master",
         "description": "Completed all intermediate puzzles", 
         "condition": lambda progress: len([p for p in progress.completed_puzzles
                                          if any(puzzle.difficulty == "intermediate" and puzzle.id == p.puzzle_id
-                                               for puzzle in get_all_puzzles())]) >= 4
+                                               for puzzle in get_all_puzzles())]) >= 20
     },
     "advanced_master": {
         "name": "Advanced Master",
         "description": "Completed all advanced puzzles",
         "condition": lambda progress: len([p for p in progress.completed_puzzles
                                          if any(puzzle.difficulty == "advanced" and puzzle.id == p.puzzle_id
-                                               for puzzle in get_all_puzzles())]) >= 6
+                                               for puzzle in get_all_puzzles())]) >= 15
     },
     "quick_solver": {
         "name": "Quick Solver",
