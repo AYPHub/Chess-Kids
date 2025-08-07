@@ -3,16 +3,35 @@ import { Chess } from 'chess.js';
 // Chess engine utilities for proper chess logic
 export class ChessEngine {
   constructor(fen = null) {
-    this.chess = new Chess(fen);
+    try {
+      this.chess = fen ? new Chess(fen) : new Chess();
+    } catch (error) {
+      console.error('Invalid FEN in constructor:', error);
+      this.chess = new Chess(); // Fallback to default position
+    }
   }
 
   // Load position from FEN
   loadPosition(fen) {
+    if (!fen || typeof fen !== 'string') {
+      console.warn('Invalid FEN position provided:', fen);
+      this.chess = new Chess(); // Reset to default position
+      return false;
+    }
+
     try {
+      const validation = Chess.validateFen(fen);
+      if (!validation.valid) {
+        console.error('Invalid FEN position:', fen, validation.error);
+        this.chess = new Chess(); // Reset to default position
+        return false;
+      }
+      
       this.chess.load(fen);
       return true;
     } catch (error) {
-      console.error('Invalid FEN position:', error);
+      console.error('Error loading FEN position:', error);
+      this.chess = new Chess(); // Reset to default position
       return false;
     }
   }
