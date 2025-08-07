@@ -186,13 +186,23 @@ const ChessBoardAdvanced = ({
   };
 
   const resetPosition = () => {
-    if (puzzle && puzzle.position) {
-      chessEngine.loadPosition(puzzle.position);
-      updateBoardDisplay();
-      setMoveHistory([]);
-      setSelectedSquare(null);
-      setValidMoves([]);
+    if (!puzzle) return;
+    
+    if (puzzle.position) {
+      const success = chessEngine.loadPosition(puzzle.position);
+      if (!success) {
+        // Fallback to default position
+        chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+      }
+    } else {
+      // Use default position if no puzzle position
+      chessEngine.loadPosition('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
     }
+    
+    updateBoardDisplay();
+    setMoveHistory([]);
+    setSelectedSquare(null);
+    setValidMoves([]);
   };
 
   // Expose methods to parent
