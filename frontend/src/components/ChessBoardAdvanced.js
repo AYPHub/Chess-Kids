@@ -57,6 +57,7 @@ const ChessBoardAdvanced = ({
   const updateBoardDisplay = () => {
     try {
       const board = chessEngine.getBoard();
+      console.log('Updated board state:', board); // Debug logging
       setBoardState(board);
     } catch (error) {
       console.error('Error updating board display:', error);
