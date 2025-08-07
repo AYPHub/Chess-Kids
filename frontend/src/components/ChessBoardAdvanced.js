@@ -290,7 +290,7 @@ const ChessBoardAdvanced = ({
                   {piece && (
                     <span className={`select-none text-shadow ${
                       piece.charAt(0) === 'w' ? 'text-white drop-shadow-lg' : 'text-gray-800'
-                    }`}>
+                    }`} style={{ fontSize: '2.5rem', lineHeight: '1' }}>
                       {ChessEngine.pieceToUnicode(piece)}
                     </span>
                   )}
