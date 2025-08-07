@@ -11,7 +11,10 @@ const ChessBoardAdvanced = ({
   const [chessEngine] = useState(() => new ChessEngine());
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
-  const [boardState, setBoardState] = useState([]);
+  const [boardState, setBoardState] = useState(() => {
+    // Initialize with empty 8x8 board
+    return Array(8).fill(null).map(() => Array(8).fill(null));
+  });
   const [moveHistory, setMoveHistory] = useState([]);
 
   // Initialize board when puzzle changes
