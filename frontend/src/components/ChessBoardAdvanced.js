@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChessEngine } from '../utils/chessEngine';
+import { testChessEngine } from '../utils/testChess';
 
 const ChessBoardAdvanced = ({ 
   puzzle,
@@ -16,6 +17,12 @@ const ChessBoardAdvanced = ({
     return Array(8).fill(null).map(() => Array(8).fill(null));
   });
   const [moveHistory, setMoveHistory] = useState([]);
+
+  // Test chess engine on component mount
+  useEffect(() => {
+    const testResult = testChessEngine();
+    console.log('Chess engine test result:', testResult);
+  }, []);
 
   // Initialize board when puzzle changes
   useEffect(() => {
