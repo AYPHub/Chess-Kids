@@ -108,6 +108,14 @@ const ProgressDashboard = () => {
               </div>
               <Progress value={(progress.intermediateSolved / 4) * 100} className="h-3" />
             </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium">Advanced</span>
+                <span className="text-sm text-gray-600">{progress.advancedSolved}/6</span>
+              </div>
+              <Progress value={(progress.advancedSolved / 6) * 100} className="h-3" />
+            </div>
           </CardContent>
         </Card>
 
